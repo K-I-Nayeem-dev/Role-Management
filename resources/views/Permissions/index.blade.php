@@ -24,7 +24,7 @@
                 </thead>
                 <tbody class="bg-white">
                     @if ($permissions->isNotEmpty())
-                        @foreach ($permissions as $permission)
+                        @forelse ($permissions as $permission)
                             <tr class="border-b">
                                 <td class="px-6 py-3 text-left" width="60">
                                     {{ $permission->id }}
@@ -38,16 +38,25 @@
                                 <td class="px-6 py-3 text-center" width="180">
                                     <div class="flex justify-between">
                                         <a href="{{ route('permission.edit', $permission->id) }}"
-                                        class="bg-slate-700 hover:bg-slate-600 py-3 rounded shadow-lg px-3 mt-2 text-sm text-white">Edit</a>
-                                        <form method="POST" action="{{ route('permission.destroy', $permission->id) }}">
+                                            class="bg-slate-700 hover:bg-slate-600 py-3 rounded shadow-lg px-3 mt-2 text-sm text-white">Edit</a>
+                                        <form method="POST"
+                                            action="{{ route('permission.destroy', $permission->id) }}">
                                             @csrf
-                                            @method("DELETE")
-                                            <button onclick="confirm('Are You sure you want to delete')" class="bg-red-500 hover:bg-red-400 py-3 rounded shadow-lg px-3 mt-2 text-sm text-white">Delete</button>
+                                            @method('DELETE')
+                                            <button onclick="confirm('Are You sure you want to delete')"
+                                                class="bg-red-500 hover:bg-red-400 py-3 rounded shadow-lg px-3 mt-2 text-sm text-white">Delete</button>
                                         </form>
                                     </div>
                                 </td>
                             </tr>
-                        @endforeach
+                        @empty
+                        @endforelse
+                    @else
+                        <tr>
+                            <td class="px-6 py-3 text-center" colspan="5">
+                                <p>No Permission Found</p>
+                            </td>
+                        </tr>
                     @endif
                 </tbody>
             </table>
