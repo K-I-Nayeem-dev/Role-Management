@@ -35,9 +35,9 @@ Route::middleware('auth')->controller(RoleController::class)->group(function () 
     Route::get('/roles', 'index')->name('roles.index');
     Route::get('/roles/create', 'create')->name('roles.create');
     Route::post('/roles/store', 'store')->name('roles.store');
-    // Route::get('/permissions/{id}/edit', 'edit')->name('permission.edit');
-    // Route::put('/permissions/{id}', 'update')->name('permission.update');
-    // Route::delete('/permissions/{id}', 'destroy')->name('permission.destroy');
+    Route::get('/roles/{id}/edit', 'edit')->name('roles.edit');
+    Route::put('/roles/{id}', 'update')->name('roles.update');
+    Route::delete('/roles/{id}', 'destroy')->name('roles.destroy');
 });
 
 require __DIR__ . '/auth.php';

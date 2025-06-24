@@ -37,7 +37,9 @@
                                         </div>
                                     @endforeach
                                 @endif
-
+                                @error('permission')
+                                    <p class="text-red-400 text-sm mt-2">{{ $message }}</p>
+                                @enderror
                             </div>
 
                             <button class="bg-slate-700 py-2 rounded shadow-lg px-4 mt-3 text-sm">Submit</button>
