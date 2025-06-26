@@ -6,9 +6,22 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class RoleController extends Controller
+class RoleController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:view roles', only: ['index']),
+            new Middleware('permission:edit roles', only: ['edit']),
+            new Middleware('permission:create roles', only: ['create']),
+            new Middleware('permission:delete roles', only: ['destroy']),
+        ];
+    }
+
     // This Method Will Show Role Page
     public function index()
     {
@@ -36,15 +49,14 @@ class RoleController extends Controller
     // This Method Will insert Role to DB
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(),
+        $validator = Validator::make(
+            $request->all(),
             [
-                
-                'name' => 'required|unique:roles|min:3',
-                'permission' => 'required|array|min:1'],
 
-            [
-                'permission.required' => 'At least one permission is required.'
-            ]);
+                'name' => 'required|unique:roles|min:3',
+            ],
+
+        );
 
         if ($validator->passes()) {
             $role = Role::create(['name' => $request->name]);
@@ -79,13 +91,13 @@ class RoleController extends Controller
 
 
     // This Method Will Update Role
-    public function update(Request $request ,$id)
+    public function update(Request $request, $id)
     {
 
         $role = Role::findOrFail($id);
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:roles,name,'.$id.',id|min:3',
+            'name' => 'required|unique:roles,name,' . $id . ',id|min:3',
         ]);
 
         if ($validator->passes()) {
@@ -95,10 +107,9 @@ class RoleController extends Controller
 
             if (!empty($request->permission)) {
                 $role->syncPermissions($request->permission);
-            } else{
+            } else {
                 $role->syncPermissions([]);
             }
-
         } else {
             return redirect()->route('roles.edit', $id)->withInput()->withErrors($validator);
         }
@@ -107,13 +118,13 @@ class RoleController extends Controller
     }
 
     // This Method Will delete Role
-    public function destroy($id) {
+    public function destroy($id)
+    {
 
         $role = Role::findOrFail($id);
 
         $role->delete();
 
         return redirect()->route('roles.index')->with('error', 'Role Deleted');
-
     }
 }
