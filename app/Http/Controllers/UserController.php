@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Role;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller implements HasMiddleware
 {
@@ -93,6 +94,7 @@ class UserController extends Controller implements HasMiddleware
         $user = User::findOrFail($id);
         $roles = Role::orderBy('name', 'ASC')->get();
         $hasRoles = $user->roles->pluck('id');
+        
         return view('user.edit', [
             'user' => $user,
             'roles' => $roles,
@@ -135,6 +137,13 @@ class UserController extends Controller implements HasMiddleware
      */
     public function destroy(string $id)
     {
-        //
+        if (!auth()->user()->hasRole('superadmin')) {
+            abort(403, 'Only superadmin can delete users.');
+        }
+
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return redirect()->route('users.index')->with('success', 'User deleted');
     }
 }

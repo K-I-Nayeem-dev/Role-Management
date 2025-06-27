@@ -49,6 +49,7 @@
                                             <a href="{{ route('users.edit', $user->id) }}"
                                                 class="bg-slate-700 hover:bg-slate-600 py-3 rounded shadow-lg px-3 mt-2 text-sm text-white">Edit</a>
                                         @endcan
+                                        
                                         @can('delete users')
                                             <form method="POST" action="{{ route('users.destroy', $user->id) }}">
                                                 @csrf
@@ -57,6 +58,26 @@
                                                     class="bg-red-500 hover:bg-red-400 py-3 rounded shadow-lg px-3 mt-2 text-sm text-white">Delete</button>
                                             </form>
                                         @endcan
+
+                                        {{-- Edit Button --}}
+                                        {{-- @if (auth()->user()->hasRole('superadmin') && auth()->id() === $user->id)
+                                            <a href="{{ route('users.edit', $user->id) }}"
+                                                class="bg-slate-700 hover:bg-slate-600 py-3 rounded shadow-lg px-3 mt-2 text-sm text-white">Edit</a>
+                                        @elseif(auth()->user()->hasRole('admin') && !$user->hasRole('superadmin'))
+                                            <a
+                                                href="{{ route('users.edit', $user->id) }}"class="bg-slate-700 hover:bg-slate-600 py-3 rounded shadow-lg px-3 mt-2 text-sm text-white">Edit</a>
+                                        @endif --}}
+
+                                        {{-- Delete Button --}}
+                                        {{-- @if (auth()->user()->hasRole('admin') && !$user->hasRole('superadmin'))
+                                            <form action="{{ route('users.destroy', $user->id) }}" method="POST"
+                                                onsubmit="return confirm('Delete this user?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit"  class="bg-red-500 hover:bg-red-400 py-3 rounded shadow-lg px-3 mt-2 text-sm text-white">Delete</button>
+                                            </form>
+                                        @endif --}}
+
                                     </div>
                                 </td>
                             </tr>

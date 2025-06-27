@@ -4,7 +4,9 @@
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 {{ __('User / Create') }}
             </h2>
-            <a href="{{ route('users.index') }}" class="bg-slate-700 py-2 rounded shadow-lg px-4 mt-2 text-sm text-white">Back</a>
+            @can('create users')
+                <a href="{{ route('users.index') }}" class="bg-slate-700 py-2 rounded shadow-lg px-4 mt-2 text-sm text-white">Back</a>
+            @endcan
         </div>
     </x-slot>
 
@@ -51,8 +53,10 @@
                                 @enderror
                             </div>
 
-                            <button class="bg-slate-700 py-2 rounded shadow-lg px-4 mt-3 text-sm hover:bg-slate-500" >Update</button>
-                            <a href="{{ route('users.index') }}" class="bg-slate-700 py-2 rounded shadow-lg px-4 ms-1 mt-3 hover:bg-slate-500 text-sm">Back</a>
+                            @can('view users')
+                                <button class="bg-slate-700 py-2 rounded shadow-lg px-4 mt-3 text-sm hover:bg-slate-500" >Update</button>
+                                <a href="{{ route('users.index') }}" class="bg-slate-700 py-2 rounded shadow-lg px-4 ms-1 mt-3 hover:bg-slate-500 text-sm">Back</a>
+                            @endcan
                         </div>
                     </form>
                 </div>

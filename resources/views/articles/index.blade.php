@@ -4,8 +4,10 @@
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 {{ __('Articles') }}
             </h2>
-            <a href="{{ route('articles.create') }}"
+            @can('create articles')
+                <a href="{{ route('articles.create') }}"
                 class="bg-slate-700 py-3 rounded shadow-lg px-3 mt-2 text-sm text-white">Create</a>
+            @endcan
         </div>
     </x-slot>
 
